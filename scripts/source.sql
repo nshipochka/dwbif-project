@@ -41,7 +41,7 @@ CREATE TABLE transaction (
 );
 
 CREATE TABLE loan(
-    load_id INT PRIMARY KEY NOT NULL,
+    loan_id INT PRIMARY KEY NOT NULL,
     account_id INT NOT NULL,
     date INT,
     amount DECIMAL,
