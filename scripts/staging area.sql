@@ -7,8 +7,9 @@ CREATE TABLE account (
     converted_date VARCHAR(10) null
 );
 
+--NB! Add the name of your scheme before function's name
 UPDATE FN45798.account
-SET converted_date = ConvertToDate(date);
+SET converted_date = FN45798.ConvertToDate(date);
 
 ALTER TABLE account
 DROP COLUMN date;
@@ -35,9 +36,11 @@ CREATE TABLE client (
     birthday DATE null
 );
 
+--NB! Add the name of your scheme before function's name
 UPDATE FN45798.CLIENT
 SET birthday = ConvertToISODateOfBirth(FN45798.CLIENT.BIRTH_NUMBER);
 
+--NB! Add the name of your scheme before function's name
 UPDATE FN45798.CLIENT
 SET gender = ConvertToISODateOfBirth(FN45798.CLIENT.BIRTH_NUMBER);
 
@@ -89,8 +92,9 @@ CREATE TABLE transaction (
     converted_date DATE null
 );
 
+--NB! Add the name of your scheme before function's name
 UPDATE FN45798.TRANSACTION
-SET converted_date = ConvertToISODateOfBirth(TRANSACTION.date);
+SET converted_date = FN45798.ConvertToISODateOfBirth(TRANSACTION.date);
 
 ALTER TABLE TRANSACTION
 DROP COLUMN date;
@@ -111,6 +115,7 @@ CREATE TABLE loan(
     converted_date DATE null
 );
 
+--NB! Add the name of your scheme before function's name
 UPDATE FN45798.loan
 SET converted_date = ConvertToISODateOfBirth(loan.date);
 
@@ -129,16 +134,8 @@ CREATE TABLE credit_card (
     converted_issue TIMESTAMP null
 );
 
-CREATE FUNCTION getTimeStamp(date varchar(20))
-RETURNS varchar(20)
-BEGIN
-    DECLARE result TIMESTAMP;
-    SET result = TO_TIMESTAMP(date, 'YYYY-MM-DD HH24:MI:SS');
 
-    RETURN VARCHAR_FORMAT(result, 'YYYY-MM-DD HH24:MI:SS');
-END;
-
-
+--NB! Add the name of your scheme before function's name
 UPDATE FN45798.loan
 SET converted_date = ConvertToISODateOfBirth(loan.date);
 
@@ -148,6 +145,7 @@ DROP COLUMN date;
 --==============================================================
 
 --==============================================================
+
 CREATE TABLE demographic_data (
     stage_at DATE DEFAULT CURRENT_DATE NOT NULL,
     district_id INT NOT NULL,
@@ -235,21 +233,6 @@ BEGIN
     RETURN TO_DATE(CONCAT('19' ,(CONCAT (year ,(CONCAT ('-' ,(CONCAT (month ,(CONCAT('-', day))))))))), 'yyyy-mm-dd');
 end;
 
-
-CREATE FUNCTION ConvertToDate(date INT)
-returns DATE
-
-BEGIN
-    DECLARE year varchar(2);
-    DECLARE month varchar(2);
-    DECLARE day varchar(2);
-
-    SET year = SUBSTR(date, 1, 2);
-    SET month = SUBSTR(date, 3, 2);
-    SET day = SUBSTR(date, 5, 2);
-    RETURN TO_DATE(CONCAT('19' ,(CONCAT (year ,(CONCAT ('-' ,(CONCAT (month ,(CONCAT('-', day))))))))), 'yyyy-mm-dd');
-end;
-
 CREATE FUNCTION getTimeStamp(date varchar(20))
 RETURNS varchar(20)
 BEGIN
@@ -258,3 +241,4 @@ BEGIN
 
     RETURN VARCHAR_FORMAT(result, 'YYYY-MM-DD HH24:MI:SS');
 END;
+
