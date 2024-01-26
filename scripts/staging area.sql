@@ -7,9 +7,9 @@ CREATE TABLE account (
     converted_date VARCHAR(10) null
 );
 
---NB! Add the name of your scheme before function's name
+--NB! Add the name of your schema before function's name
 UPDATE FN45798.account
-SET converted_date = FN45798.ConvertToDate(date);
+SET converted_date = ConvertToDate(date);
 
 ALTER TABLE account
 DROP COLUMN date;
@@ -92,9 +92,9 @@ CREATE TABLE transaction (
     converted_date DATE null
 );
 
---NB! Add the name of your scheme before function's name
+--NB! Add the name of your schema before function's name
 UPDATE FN45798.TRANSACTION
-SET converted_date = FN45798.ConvertToISODateOfBirth(TRANSACTION.date);
+SET converted_date = ConvertToISODateOfBirth(TRANSACTION.date);
 
 ALTER TABLE TRANSACTION
 DROP COLUMN date;
@@ -115,7 +115,7 @@ CREATE TABLE loan(
     converted_date DATE null
 );
 
---NB! Add the name of your scheme before function's name
+--NB! Add the name of your schema before function's name
 UPDATE FN45798.loan
 SET converted_date = ConvertToISODateOfBirth(loan.date);
 
@@ -135,7 +135,7 @@ CREATE TABLE credit_card (
 );
 
 
---NB! Add the name of your scheme before function's name
+--NB! Add the name of your schema before function's name
 UPDATE FN45798.loan
 SET converted_date = ConvertToISODateOfBirth(loan.date);
 
