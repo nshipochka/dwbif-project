@@ -41,7 +41,7 @@ SELECT staged_card.card_id,
        d2.district_id,
        d1.district_id,
        d_disp_type.d_type_id
-FROM postgres.public.card_staging AS staged_card
+FROM dw.staging_area.card_staging AS staged_card
          JOIN d_account ON staged_card.account_id = d_account.account_id
          JOIN d_client ON staged_card.client_id = d_client.client_id
          JOIN d_card_type ON staged_card.type = d_card_type.c_type

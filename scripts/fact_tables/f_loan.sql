@@ -29,7 +29,6 @@ INSERT INTO f_loan
  account_district,
  amount,
  begin_date,
- end_date,
  duration,
  payments,
  status)
@@ -40,8 +39,8 @@ SELECT staged_loan.loan_id,
        staged_loan.date,
        staged_loan.duration,
        d_loan_status.l_status_id
-FROM postgres.public.loan AS staged_loan
-         NATURAL JOIN postgres.public.account AS staged_acc
+FROM dw.staging_area.loan_staging AS staged_loan
+         NATURAL JOIN dw.staging_area.account_staging AS staged_acc
          NATURAL JOIN d_account
          NATURAL JOIN d_demographic
          NATURAL JOIN d_date AS b_date
