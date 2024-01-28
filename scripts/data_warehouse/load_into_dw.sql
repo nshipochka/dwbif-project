@@ -75,27 +75,25 @@ INSERT INTO f_loan
  amount,
  begin_date,
  duration,
- payments,
- status)
+ payments)
+ --status)
 SELECT staged_loan.loan_id,
        staged_loan.account_id,
        staged_acc.district_id,
        staged_loan.amount,
        staged_loan.date,
        staged_loan.duration,
-       staged_loan.payments,
-       d_loan_status.l_status_id
+       staged_loan.payments
+       --d_loan_status.l_status_id
 FROM dw.staging_area.loan AS staged_loan
-         NATURAL JOIN dw.staging_area.account AS staged_acc
-         NATURAL JOIN d_account
-         NATURAL JOIN d_demographic
-         NATURAL JOIN d_date AS b_date
-         NATURAL JOIN d_loan_status
-WHERE (staged_loan.account_id = staged_acc.account_id AND
-       staged_loan.account_id = d_account.account_id AND
-       staged_acc.district_id = d_demographic.district_id AND
-       staged_loan.date = b_date.date AND
-       staged_loan.status = d_loan_status.l_status);
+         JOIN dw.staging_area.account AS staged_acc
+             ON staged_loan.account_id = staged_acc.account_id
+         JOIN d_demographic
+            ON staged_acc.district_id = d_demographic.district_id
+         JOIN d_date
+            ON staged_loan.date = d_date.date
+         JOIN d_loan_status
+            ON staged_loan.status = d_loan_status.l_status;
 
 -- order
 INSERT INTO f_order
@@ -114,17 +112,16 @@ SELECT staged_order.order_id,
        d_partner_bank.pb_id,
        staged_order.account_to
 FROM dw.staging_area.permanent_order AS staged_order
-         NATURAL JOIN dw.staging_area.account AS staged_acc
-         NATURAL JOIN d_account
-         NATURAL JOIN d_demographic
-         NATURAL JOIN d_payment_type
-         NATURAL JOIN d_partner_bank
-WHERE (staged_order.account_id = staged_acc.account_id AND
-       staged_order.account_id = d_account.account_id AND
-       staged_acc.district_id = d_demographic.district_id AND
-       staged_order.k_symbol = d_payment_type.p_type AND
-       staged_order.bank_to = d_partner_bank.pb_code);
-
+         JOIN dw.staging_area.account AS staged_acc
+             ON staged_order.account_id = staged_acc.account_id
+         JOIN d_account
+             ON staged_order.account_id = d_account.account_id
+         JOIN d_demographic
+             ON staged_acc.district_id = d_demographic.district_id
+         JOIN d_payment_type
+             ON staged_order.k_symbol = d_payment_type.p_type
+         JOIN d_partner_bank
+             ON staged_order.bank_to = d_partner_bank.pb_code;
 -- transaction
 
 INSERT INTO f_transaction
@@ -151,20 +148,19 @@ SELECT staged_transaction.trans_id,
        d_partner_bank.pb_id,
        staged_transaction.account
 FROM dw.staging_area.transaction AS staged_transaction
-         NATURAL JOIN dw.staging_area.account AS staged_acc
-         NATURAL JOIN d_account
-         NATURAL JOIN d_demographic
-         NATURAL JOIN d_date AS b_date
-         NATURAL JOIN d_transaction_type
-         NATURAL JOIN d_transaction_mode
-         NATURAL JOIN d_payment_type
-         NATURAL JOIN d_partner_bank
-WHERE (staged_transaction.account_id = staged_acc.account_id AND
-       staged_transaction.account_id = d_account.account_id AND
-       staged_acc.district_id = d_demographic.district_id AND
-       staged_transaction.date = b_date.date AND
-       staged_transaction.type = d_transaction_type.t_type AND
-       staged_transaction.operation = d_transaction_mode.t_mode AND
-       staged_transaction.k_symbol = d_payment_type.p_type AND
-       staged_transaction.bank = d_partner_bank.pb_code);
-
+         JOIN dw.staging_area.account AS staged_acc
+             ON staged_transaction.account_id = staged_acc.account_id
+         JOIN d_account
+            ON staged_acc.account_id = d_account.account_id
+         JOIN d_demographic
+            ON staged_acc.district_id = d_demographic.district_id
+         JOIN d_date
+            ON staged_transaction.date = d_date.date
+         JOIN d_transaction_type
+            ON staged_transaction.type = d_transaction_type.t_type
+         JOIN d_transaction_mode
+            ON staged_transaction.operation = d_transaction_mode.t_mode
+         JOIN d_payment_type
+            ON staged_transaction.k_symbol = d_payment_type.p_type
+         JOIN d_partner_bank
+            ON staged_transaction.bank = d_partner_bank.pb_code;

@@ -41,16 +41,16 @@ INSERT INTO dw.staging_area.credit_card
  type,
  issued,
  disp_type)
-SELECT card_id,
-       client.client_id,
-       account.account_id,
+SELECT credit_card.card_id,
+       disposition.client_id,
+       disposition.account_id,
        client.district_id,
        account.district_id,
        credit_card.type,
-       issued,
+       credit_card.issued,
        disposition.type
-FROM credit_card
-         JOIN disposition ON credit_card.client_id = disposition.client_id
+FROM dw.business_op.credit_card
+         JOIN disposition ON credit_card.disp_id = disposition.disp_id
          JOIN client ON disposition.client_id = client.client_id
          JOIN account ON disposition.account_id = account.account_id;
 
@@ -93,5 +93,48 @@ SELECT loan_id,
        converttodate(date)
 FROM dw.business_op.loan;
 
+-- Permanent Order
+INSERT INTO dw.staging_area.permanent_order
+    (order_id,
+     account_id,
+     bank_to,
+     account_to,
+     amount,
+     k_symbol)
+SELECT *
+FROM dw.business_op.permanent_order;
+
+-- Transaction
+INSERT INTO dw.staging_area.transaction
+    (trans_id,
+     account_id,
+     type,
+     operation,
+     amount,
+     balance,
+     k_symbol,
+     bank,
+     account,
+     date)
+SELECT
+    trans_id,
+    account_id,
+    type,
+    operation,
+    amount,
+    balance,
+    k_symbol,
+    bank,
+    account,
+    converttodate(date)
+FROM dw.business_op.transaction;
+
+SELECT loan_id, account.account_id
+FROM dw.staging_area.loan JOIN dw.staging_area.account
+ON loan.account_id = account.account_id;
+
+SELECT permanent_order.order_id, account.account_id
+FROM dw.staging_area.permanent_order JOIN dw.staging_area.account
+ON permanent_order.account_id = account.account_id;
 
 
