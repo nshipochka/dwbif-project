@@ -21,7 +21,9 @@ RENAME COLUMN converted_date TO date;
 
 --SELECT FN45798.ConvertToDate(930101) FROM SYSIBM.SYSDUMMY1;
 
---SELECT FN45798.getGender(401009) FROM SYSIBM.SYSDUMMY1;
+SELECT FN45798.getGender(401009) FROM SYSIBM.SYSDUMMY1;
+
+SELECT FN45798.CONVERTTOISODATEOFBIRTH(931010) FROM SYSIBM.SYSDUMMY1;
 
 --==============================================================
 
@@ -38,11 +40,11 @@ CREATE TABLE client (
 
 --NB! Add the name of your scheme before function's name
 UPDATE FN45798.CLIENT
-SET birthday = ConvertToISODateOfBirth(FN45798.CLIENT.BIRTH_NUMBER);
+SET birthday = FN45798.ConvertToISODateOfBirth(BIRTH_NUMBER);
 
 --NB! Add the name of your scheme before function's name
 UPDATE FN45798.CLIENT
-SET gender = ConvertToISODateOfBirth(FN45798.CLIENT.BIRTH_NUMBER);
+SET gender = FN45798.GETGENDER(BIRTH_NUMBER);
 
 ALTER TABLE client
 DROP COLUMN birth_number;
