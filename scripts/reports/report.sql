@@ -59,7 +59,7 @@ FROM f_loan l
 JOIN d_account a ON l.account_id = a.account_id
 JOIN d_demographic d ON l.account_district = d.district_id
 JOIN d_loan_status ls ON l.status = ls.l_status_id
-GROUP BY d.region
+GROUP BY d.region, ls.l_status
 ORDER BY total_loan_amount DESC
 LIMIT 10;
 

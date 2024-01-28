@@ -129,12 +129,5 @@ SELECT
     converttodate(date)
 FROM dw.business_op.transaction;
 
-SELECT loan_id, account.account_id
-FROM dw.staging_area.loan JOIN dw.staging_area.account
-ON loan.account_id = account.account_id;
-
-SELECT permanent_order.order_id, account.account_id
-FROM dw.staging_area.permanent_order JOIN dw.staging_area.account
-ON permanent_order.account_id = account.account_id;
 
 
