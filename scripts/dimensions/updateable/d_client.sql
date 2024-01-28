@@ -19,5 +19,5 @@ SELECT client_id,
        birthday,
        gender,
        stage_at
-FROM dw.staging_area.client_staging
+FROM dw.staging_area.client
 ON CONFLICT(client_id) DO NOTHING;

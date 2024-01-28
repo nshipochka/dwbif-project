@@ -1,6 +1,6 @@
 CREATE TABLE d_card_type
 (
-    c_type_id SERIAL NOT NULL, --self generating
+    c_type_id SERIAL NOT NULL, -- self generating
     c_type    VARCHAR(15)
 );
 

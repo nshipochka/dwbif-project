@@ -1,4 +1,4 @@
-CREATE TABLE card_staging
+CREATE TABLE credit_card
 (
     stage_at         DATE DEFAULT CURRENT_DATE,
     card_id          INT NOT NULL PRIMARY KEY,
@@ -11,7 +11,7 @@ CREATE TABLE card_staging
     disp_type        VARCHAR(10)
 );
 
-INSERT INTO card_staging
+INSERT INTO credit_card
 (card_id,
  client_id,
  account_id,
@@ -29,6 +29,6 @@ SELECT card_id,
        issued,
        disposition.type
 FROM credit_card
-         JOIN disposition ON credit_card.disp_id = disposition.disp_id
+         JOIN disposition ON credit_card.client_id = disposition.client_id
          JOIN client ON disposition.client_id = client.client_id
          JOIN account ON disposition.account_id = account.account_id;

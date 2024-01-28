@@ -19,5 +19,5 @@ SELECT account_id,
        frequency,
        date,
        stage_at
-FROM dw.staging_area.account_staging
+FROM dw.staging_area.account
 ON CONFLICT(account_id) DO NOTHING;

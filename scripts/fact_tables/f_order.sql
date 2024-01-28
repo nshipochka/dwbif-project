@@ -39,8 +39,8 @@ SELECT staged_order.order_id,
        d_payment_type.p_type_id,
        d_partner_bank.pb_id,
        staged_order.account_to
-FROM postgres.public.permanent_order AS staged_order
-         NATURAL JOIN postgres.public.account AS staged_acc
+FROM dw.staging_area.permanent_order AS staged_order
+         NATURAL JOIN dw.staging_area.account AS staged_acc
          NATURAL JOIN d_account
          NATURAL JOIN d_demographic
          NATURAL JOIN d_payment_type

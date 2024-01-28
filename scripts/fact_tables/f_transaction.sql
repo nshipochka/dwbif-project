@@ -57,8 +57,8 @@ SELECT staged_transaction.trans_id,
        d_payment_type.p_type_id,
        d_partner_bank.pb_id,
        staged_transaction.account
-FROM dw.staging_area.transaction_staging AS staged_transaction
-         NATURAL JOIN dw.staging_area.account_staging AS staged_acc
+FROM dw.staging_area.transaction AS staged_transaction
+         NATURAL JOIN dw.staging_area.account AS staged_acc
          NATURAL JOIN d_account
          NATURAL JOIN d_demographic
          NATURAL JOIN d_date AS b_date
