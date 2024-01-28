@@ -1,4 +1,4 @@
--- Load updateable dimensions
+-- Load updatable dimensions
 -- Insert into d_account from staging
 INSERT INTO d_account
 (account_id,
@@ -137,7 +137,7 @@ INSERT INTO f_transaction
  bank_to,
  account_to)
 SELECT staged_transaction.trans_id,
-       staged_transaction.account,
+       staged_transaction.account_id,
        staged_acc.district_id,
        staged_transaction.amount,
        staged_transaction.balance,
