@@ -21,9 +21,9 @@ RENAME COLUMN converted_date TO date;
 
 --SELECT FN45798.ConvertToDate(930101) FROM SYSIBM.SYSDUMMY1;
 
-SELECT FN45798.getGender(401009) FROM SYSIBM.SYSDUMMY1;
+--SELECT FN45798.getGender(401009) FROM SYSIBM.SYSDUMMY1;
 
-SELECT FN45798.CONVERTTOISODATEOFBIRTH(931010) FROM SYSIBM.SYSDUMMY1;
+--SELECT FN45798.CONVERTTOISODATEOFBIRTH(931010) FROM SYSIBM.SYSDUMMY1;
 
 --==============================================================
 
@@ -94,9 +94,10 @@ CREATE TABLE transaction (
     converted_date DATE null
 );
 
+
 --NB! Add the name of your schema before function's name
 UPDATE FN45798.TRANSACTION
-SET converted_date = ConvertToISODateOfBirth(TRANSACTION.date);
+SET converted_date = FN45798.ConvertToISODateOfBirth(date);
 
 ALTER TABLE TRANSACTION
 DROP COLUMN date;
