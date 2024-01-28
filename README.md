@@ -1,6 +1,9 @@
 # dwbif-project
 Project for the Data Warehouse &amp; Business Intelligence Fundamentals course, taught at FMI, Sofia University
 
+1 Database : dw
+3 Schemas : business_op, staging_area, data_warehouse
+
 # Staging
 - На редовно обновяваните неща се добавя дата, ако има промяна с данните в склада, ще се добавят в склада с новата дата?
 - Където по принцип си има дата, се сменя от формат `INТ` на `DATE`
@@ -30,8 +33,12 @@ Project for the Data Warehouse &amp; Business Intelligence Fundamentals course, 
 
 ### Transaction Type
 
-
-
-
-
 ## Fact Tables
+### f_card
+![f_card diagram](./f_card.png)
+### f_loan
+![f_loan diagram](./f_loan.png)
+### f_order
+![f_order diagram](./f_order.png)
+### f_transaction
+![f_transaction diagram](./f_transaction.png)
