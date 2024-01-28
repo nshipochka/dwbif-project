@@ -75,7 +75,7 @@ INSERT INTO f_loan
  amount,
  begin_date,
  duration,
- payments)
+ payments,
  status)
 SELECT staged_loan.loan_id,
        staged_loan.account_id,
