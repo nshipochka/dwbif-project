@@ -21,6 +21,3 @@ CREATE TABLE d_demographic
 ALTER TABLE d_demographic
     ADD PRIMARY KEY (district_id);
 
-INSERT INTO d_demographic
-SELECT *
-FROM dw.business_op.demographic_data;
