@@ -4,11 +4,11 @@ CREATE TABLE account (
     district_id INT NOT NULL,
     frequency VARCHAR(30),
     date INT not null,
-    converted_date VARCHAR(10) null
+    converted_date DATE null
 );
 
 --NB! Add the name of your schema before function's name
-UPDATE FN45798.account
+UPDATE account
 SET converted_date = ConvertToDate(date);
 
 ALTER TABLE account
@@ -27,8 +27,6 @@ RENAME COLUMN converted_date TO date;
 
 --==============================================================
 
-drop function getGender();
-
 CREATE TABLE client (
     stage_at DATE DEFAULT CURRENT_DATE NOT NULL,
     client_id INT NOT NULL,
@@ -39,12 +37,12 @@ CREATE TABLE client (
 );
 
 --NB! Add the name of your scheme before function's name
-UPDATE FN45798.CLIENT
-SET birthday = FN45798.ConvertToISODateOfBirth(BIRTH_NUMBER);
+UPDATE CLIENT
+SET birthday = ConvertToISODateOfBirth(BIRTH_NUMBER);
 
 --NB! Add the name of your scheme before function's name
-UPDATE FN45798.CLIENT
-SET gender = FN45798.GETGENDER(BIRTH_NUMBER);
+UPDATE CLIENT
+SET gender = GETGENDER(BIRTH_NUMBER);
 
 ALTER TABLE client
 DROP COLUMN birth_number;
@@ -96,8 +94,8 @@ CREATE TABLE transaction (
 
 
 --NB! Add the name of your schema before function's name
-UPDATE FN45798.TRANSACTION
-SET converted_date = FN45798.ConvertToISODateOfBirth(date);
+UPDATE TRANSACTION
+SET converted_date = ConvertToISODateOfBirth(date);
 
 ALTER TABLE TRANSACTION
 DROP COLUMN date;
@@ -108,7 +106,7 @@ DROP COLUMN date;
 
 CREATE TABLE loan(
     stage_at DATE DEFAULT CURRENT_DATE NOT NULL,
-    load_id INT NOT NULL,
+    loan_id INT NOT NULL,
     account_id INT NOT NULL,
     date INT,
     amount DECIMAL,
@@ -119,7 +117,7 @@ CREATE TABLE loan(
 );
 
 --NB! Add the name of your schema before function's name
-UPDATE FN45798.loan
+UPDATE loan
 SET converted_date = ConvertToISODateOfBirth(loan.date);
 
 ALTER TABLE loan
@@ -139,7 +137,7 @@ CREATE TABLE credit_card (
 
 
 --NB! Add the name of your schema before function's name
-UPDATE FN45798.loan
+UPDATE loan
 SET converted_date = ConvertToISODateOfBirth(loan.date);
 
 ALTER TABLE loan
@@ -181,7 +179,7 @@ Alter table permanent_order ADD PRIMARY KEY (stage_at, order_id);
 
 Alter table transaction ADD PRIMARY KEY (stage_at, trans_id);
 
-Alter table loan ADD PRIMARY KEY (stage_at, load_id);
+Alter table loan ADD PRIMARY KEY (stage_at, loan_id);
 
 Alter table credit_card ADD PRIMARY KEY (stage_at, card_id);
 
@@ -189,59 +187,64 @@ Alter table demographic_data ADD PRIMARY KEY (stage_at, district_id);
 
 
 -- Returns 'M' or 'W'
-CREATE FUNCTION getGender(date INT)
-RETURNS CHARACTER
+CREATE OR REPLACE FUNCTION getGender(p_date INT)
+RETURNS CHAR AS $$
+DECLARE
+    month VARCHAR(2);
 BEGIN
-    DECLARE month varchar(2);
-    SET month = SUBSTR(date, 3,2);
+    month := SUBSTRING(CAST(p_date AS VARCHAR), 3, 2);
 
     IF (month >= '51' AND month <= '62') THEN
-        return 'W';
+        RETURN 'W';
+    ELSE
+        RETURN 'M';
     END IF;
+END;
+$$ LANGUAGE plpgsql;
 
-    return 'M';
-end;
 
-
-CREATE FUNCTION ConvertToISODateOfBirth(date INT)
-RETURNS DATE
+CREATE OR REPLACE FUNCTION ConvertToISODateOfBirth(p_date INT)
+RETURNS DATE AS $$
+DECLARE
+    year VARCHAR(2);
+    month VARCHAR(2);
+    day VARCHAR(2);
 BEGIN
-    DECLARE year VARCHAR(2);
-    DECLARE month VARCHAR(2);
-    DECLARE day VARCHAR(2);
-
-    SET year = SUBSTR(date, 1, 2);
-    SET month = SUBSTR(date, 3, 2);
-    SET day = SUBSTR(date, 5, 2);
+    year := SUBSTRING(CAST(p_date AS VARCHAR), 1, 2);
+    month := SUBSTRING(CAST(p_date AS VARCHAR), 3, 2);
+    day := SUBSTRING(CAST(p_date AS VARCHAR), 5, 2);
 
     IF (month >= '51' AND month <= '62') THEN
-        SET month = (CAST(month AS INT) - 50);
+        month := CAST(month AS INT) - 50;
     END IF;
 
-    RETURN TO_DATE(CONCAT('19', CONCAT(year, CONCAT('-', CONCAT(month, CONCAT('-', day))))), 'YYYY-MM-DD');
+    RETURN TO_DATE('19' || year || '-' || month || '-' || day, 'YYYY-MM-DD');
 END;
+$$ LANGUAGE plpgsql;
 
 
-CREATE FUNCTION ConvertToDate(date INT)
-returns DATE
-
+CREATE OR REPLACE FUNCTION ConvertToDate(p_date INT)
+RETURNS DATE AS $$
+DECLARE
+    year VARCHAR(2);
+    month VARCHAR(2);
+    day VARCHAR(2);
 BEGIN
-    DECLARE year varchar(2);
-    DECLARE month varchar(2);
-    DECLARE day varchar(2);
+    year := SUBSTRING(CAST(p_date AS VARCHAR), 1, 2);
+    month := SUBSTRING(CAST(p_date AS VARCHAR), 3, 2);
+    day := SUBSTRING(CAST(p_date AS VARCHAR), 5, 2);
 
-    SET year = SUBSTR(date, 1, 2);
-    SET month = SUBSTR(date, 3, 2);
-    SET day = SUBSTR(date, 5, 2);
-    RETURN TO_DATE(CONCAT('19' ,(CONCAT (year ,(CONCAT ('-' ,(CONCAT (month ,(CONCAT('-', day))))))))), 'yyyy-mm-dd');
-end;
-
-CREATE FUNCTION getTimeStamp(date varchar(20))
-RETURNS varchar(20)
-BEGIN
-    DECLARE result TIMESTAMP;
-    SET result = TO_TIMESTAMP(date, 'YYYY-MM-DD HH24:MI:SS');
-
-    RETURN VARCHAR_FORMAT(result, 'YYYY-MM-DD HH24:MI:SS');
+    RETURN TO_DATE('19' || year || '-' || month || '-' || day, 'YYYY-MM-DD');
 END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION getTimeStamp(p_date VARCHAR(20))
+RETURNS DATE AS $$
+DECLARE
+    result TIMESTAMP;
+BEGIN
+    result := TO_TIMESTAMP(p_date, 'YYYY-MM-DD HH24:MI:SS');
+    RETURN TO_DATE(result);
+END;
+$$ LANGUAGE plpgsql;
 
