@@ -38,10 +38,10 @@ Project for the Data Warehouse &amp; Business Intelligence Fundamentals course, 
 
 ## Fact Tables
 ### f_card
-![f_card diagram](./f_card.png)
+![f_card diagram](./diagrams/f_card.png)
 ### f_loan
-![f_loan diagram](./f_loan.png)
+![f_loan diagram](./diagrams/f_loan.png)
 ### f_order
-![f_order diagram](./f_order.png)
+![f_order diagram](./diagrams/f_order.png)
 ### f_transaction
-![f_transaction diagram](./f_transaction.png)
+![f_transaction diagram](./diagrams/f_transaction.png)
