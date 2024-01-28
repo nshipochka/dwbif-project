@@ -76,15 +76,15 @@ INSERT INTO f_loan
  begin_date,
  duration,
  payments)
- --status)
+ status)
 SELECT staged_loan.loan_id,
        staged_loan.account_id,
        staged_acc.district_id,
        staged_loan.amount,
        staged_loan.date,
        staged_loan.duration,
-       staged_loan.payments
-       --d_loan_status.l_status_id
+       staged_loan.payments,
+       d_loan_status.l_status_id
 FROM dw.staging_area.loan AS staged_loan
          JOIN dw.staging_area.account AS staged_acc
              ON staged_loan.account_id = staged_acc.account_id
